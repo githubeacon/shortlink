@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beacon.shortlink.mapper.LinkMapper">
+
+    <resultMap id="linkMap" type="com.beacon.shortlink.entity.Link">
+        <id column="id" property="id"/>
+        <result column="url" property="longLink"/>
+    </resultMap>
+
+    <insert id="addLink" keyProperty="link.id" keyColumn="id" useGeneratedKeys="true"
+            parameterType="com.beacon.shortlink.entity.Link" >
+        insert into link(url) values(#{link.longLink})
+    </insert>
+
+    <select id="queryLink" parameterType="com.beacon.shortlink.entity.Link"
+            resultMap="linkMap" >
+        select id,url  from link
+        <where>
+
+            <if test="link.id != null">
+                and id=#{link.id}
+            </if>
+            <if test="link.longLink!=null and link.longLink!=''">
+                and url=#{link.longLink}
+            </if>
+        </where>
+    </select>
+</mapper>
